@@ -14,12 +14,12 @@ now = datetime.now()
 def const(bot, update):
     user_text = update.message.text
     user_text_list = user_text.split()
-    planet = user_text_list[1].lower()
-    if planet == 'mars':
-        mars = ephem.Mars(f'{now.year}/{now.month}/{now.day}')
-        print(ephem.constellation(mars))
-        update.message.reply_text(f'Планета находится в созвездии: {ephem.constellation(mars)}')
-    else:
+    try:
+        planet_class = getattr(ephem, user_text_list[1].capitalize())
+        planet_instance = planet_class(f'{now.year}/{now.month}/{now.day}')
+        print(ephem.constellation(planet_instance))
+        update.message.reply_text(f'Планета находится в созвездии: {ephem.constellation(planet_instance)}')
+    except AttributeError:
         print("Не знаю такой планеты :(")
         update.message.reply_text("Не знаю такой планеты :(")
 
