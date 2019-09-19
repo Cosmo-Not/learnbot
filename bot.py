@@ -16,17 +16,19 @@ def const(bot, update):
     user_text_list = user_text.split()
     try:
         planet_class = getattr(ephem, user_text_list[1].capitalize())
-        planet_instance = planet_class(f'{now.year}/{now.month}/{now.day}')
-        print(ephem.constellation(planet_instance))
+        planet_instance = planet_class(datetime.now().strftime("%Y/%m/%d"))
+        logging.info("User: %s, Chat id: %s, Message: %s", update.message.chat.username,
+                                            update.message.chat.id, update.message.text)
         update.message.reply_text(f'Планета находится в созвездии: {ephem.constellation(planet_instance)}')
+        logging.info(f'Планета находится в созвездии: {ephem.constellation(planet_instance)}')
     except AttributeError:
-        print("Не знаю такой планеты :(")
+        logging.info("Не знаю такой планеты :(")
         update.message.reply_text("Не знаю такой планеты :(")
 
 def greet_user(bot, update):
     user_text = 'Вызван /start'
-    logging.info(text)
-    update.message.reply_text(text)
+    logging.info(user_text)
+    update.message.reply_text(user_text)
 
 def talk_to_me(bot, update):
     user_text = "Привет {}! Ты написал: {}".format(update.message.chat.first_name, update.message.text)
